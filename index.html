@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="kn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>ದೈನಂದಿನ ಬೋಧನಾ ವರದಿ - GHPKBS KUSUGAL</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#2f5233">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ಬೋಧನಾ ವರದಿ">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Kannada:wght@400;500;600;700;800&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#26291f;
+    --paper:#f6f3ea;
+    --panel:#ffffff;
+    --line:#e2ddcb;
+    --pine:#2f5233;
+    --pine-dark:#1f3a23;
+    --pine-tint:#e8f0e6;
+    --clay:#a8462f;
+    --muted:#7a755f;
+    --gold:#b98a2c;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--paper);
+    font-family:'Noto Sans Kannada','Noto Sans',sans-serif;
+    color:var(--ink);
+    padding-bottom:110px;
+  }
+
+  /* ===== Top banner ===== */
+  .banner{
+    background: linear-gradient(160deg, var(--pine) 0%, var(--pine-dark) 100%);
+    color:#f4f1e6;
+    padding:22px 20px 26px;
+    position:relative;
+    overflow:hidden;
+  }
+  .banner::after{
+    content:"";
+    position:absolute;
+    right:-40px; top:-40px;
+    width:160px; height:160px;
+    border-radius:50%;
+    background:rgba(244,241,230,0.06);
+  }
+  .banner::before{
+    content:"";
+    position:absolute;
+    left:-30px; bottom:-60px;
+    width:140px; height:140px;
+    border-radius:50%;
+    background:rgba(244,241,230,0.05);
+  }
+  .banner .school{
+    font-size:20px;
+    font-weight:800;
+    letter-spacing:0.3px;
+    margin:0 0 2px;
+    position:relative;
+  }
+  .banner .title{
+    font-size:13.5px;
+    color:#cfe0cf;
+    margin:0;
+    position:relative;
+  }
+  .banner .badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-top:14px;
+    background:rgba(244,241,230,0.12);
+    border:1px solid rgba(244,241,230,0.28);
+    padding:6px 12px;
+    font-size:12.5px;
+    color:#f4f1e6;
+    position:relative;
+  }
+  .banner .badge .dot{
+    width:6px;height:6px;border-radius:50%;background:var(--gold);
+    display:inline-block;
+  }
+
+  /* ===== Meta card ===== */
+  .wrap{max-width:640px; margin:0 auto; padding:0 14px;}
+  .card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    box-shadow: 0 8px 22px -16px rgba(31,58,35,0.35);
+  }
+  .meta-card{
+    margin-top:-18px;
+    position:relative;
+    padding:16px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    border-radius:2px;
+  }
+  .meta-card .full{grid-column:1 / -1;}
+  .field label{
+    display:block;
+    font-size:11.5px;
+    color:var(--muted);
+    margin-bottom:5px;
+    font-weight:600;
+  }
+  .field input{
+    width:100%;
+    border:1.5px solid var(--line);
+    background:#fcfbf6;
+    border-radius:8px;
+    font-family:inherit;
+    font-size:15px;
+    padding:11px 12px;
+    color:var(--ink);
+  }
+  .field input:focus{
+    outline:none;
+    border-color:var(--pine);
+    background:#fff;
+  }
+  .field select{
+    width:100%;
+    border:1.5px solid var(--line);
+    background:#fcfbf6;
+    border-radius:8px;
+    font-family:inherit;
+    font-size:15px;
+    padding:11px 12px;
+    color:var(--ink);
+    appearance:none;
+    -webkit-appearance:none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%237a755f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+    background-repeat:no-repeat;
+    background-position:right 12px center;
+  }
+  .field select:focus{
+    outline:none;
+    border-color:var(--pine);
+    background-color:#fff;
+  }
+  .status-banner{
+    grid-column:1 / -1;
+    padding:12px 14px;
+    border-radius:8px;
+    font-size:13px;
+    font-weight:600;
+    display:none;
+  }
+  .status-banner.show{display:block;}
+  .status-banner.holiday{
+    background:#fdf3e7;
+    color:var(--gold);
+    border:1px solid var(--gold);
+  }
+  .status-banner.leave{
+    background:#fbeae6;
+    color:var(--clay);
+    border:1px solid var(--clay);
+  }
+
+  /* ===== Section label ===== */
+  .section-label{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:26px 2px 12px;
+    color:var(--pine-dark);
+  }
+  .section-label .line{
+    flex:1;
+    height:1px;
+    background:var(--line);
+  }
+  .section-label span{
+    font-size:13.5px;
+    font-weight:700;
+  }
+
+  /* ===== Period cards ===== */
+  .periods{display:flex; flex-direction:column; gap:12px;}
+  .period-card{
+    padding:16px;
+    border-radius:10px;
+    position:relative;
+  }
+  .period-head{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:12px;
+  }
+  .period-num{
+    width:30px;height:30px;
+    flex-shrink:0;
+    background:var(--pine-tint);
+    color:var(--pine-dark);
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:13.5px;
+  }
+  .period-head .plabel{
+    font-size:14px;
+    font-weight:700;
+    color:var(--ink);
+  }
+  .period-body{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+  .period-body .full{grid-column:1 / -1;}
+  .period-card label{
+    display:block;
+    font-size:11.5px;
+    color:var(--muted);
+    margin-bottom:5px;
+    font-weight:600;
+  }
+  .period-card input, .period-card textarea{
+    width:100%;
+    border:1.5px solid var(--line);
+    background:#fcfbf6;
+    border-radius:8px;
+    font-family:inherit;
+    font-size:14.5px;
+    padding:10px 11px;
+    color:var(--ink);
+    resize:vertical;
+  }
+  .period-card textarea{min-height:52px; line-height:1.4;}
+  .period-card input:focus, .period-card textarea:focus{
+    outline:none; border-color:var(--pine); background:#fff;
+  }
+
+  /* ===== Sticky submit bar ===== */
+  .submit-bar{
+    position:fixed;
+    bottom:0; left:0; right:0;
+    background:rgba(246,243,234,0.92);
+    backdrop-filter: blur(8px);
+    border-top:1px solid var(--line);
+    padding:12px 14px calc(12px + env(safe-area-inset-bottom));
+    display:flex;
+    align-items:center;
+    gap:12px;
+    z-index:50;
+  }
+  .status{
+    flex:1;
+    font-size:12.5px;
+    color:var(--muted);
+    line-height:1.35;
+  }
+  .status.ok{color:var(--pine); font-weight:700;}
+  .status.err{color:var(--clay); font-weight:700;}
+  button#submitBtn{
+    background:var(--pine);
+    color:#fbfaf2;
+    border:none;
+    padding:14px 22px;
+    border-radius:10px;
+    font-family:inherit;
+    font-size:15px;
+    font-weight:700;
+    letter-spacing:0.2px;
+    cursor:pointer;
+    white-space:nowrap;
+    box-shadow:0 6px 16px -8px rgba(47,82,51,0.6);
+  }
+  button#submitBtn:active{transform:translateY(1px);}
+  button#submitBtn:disabled{background:#a9a493; box-shadow:none;}
+
+  .setup-note{
+    max-width:640px;
+    margin:22px auto 90px;
+    padding:14px 16px;
+    background:var(--pine-tint);
+    border:1px solid var(--pine);
+    border-radius:10px;
+    font-size:12.5px;
+    color:var(--pine-dark);
+    line-height:1.55;
+  }
+  .setup-note code{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:5px;
+    padding:1px 5px;
+    font-size:12px;
+  }
+
+  .lookup-note{
+    grid-column:1 / -1;
+    font-size:12px;
+    color:var(--muted);
+    margin-top:-4px;
+  }
+  .lookup-note.ok{color:var(--pine); font-weight:600;}
+  .lookup-note.err{color:var(--clay); font-weight:600;}
+
+  @media (min-width:520px){
+    .period-body{grid-template-columns:1fr 1fr 2fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <p class="school">GHPKBS KUSUGAL</p>
+  <p class="title">ದೈನಂದಿನ ಬೋಧನಾ ವರದಿ · 8 ಅವಧಿಗಳು</p>
+  <div class="badge"><span class="dot"></span> PRAVEEN KULKARNI</div>
+</div>
+
+<div class="wrap">
+  <div class="card meta-card">
+    <div class="field full">
+      <label>ದಿನಾಂಕ</label>
+      <input type="date" id="reportDate">
+    </div>
+    <div class="lookup-note" id="lookupNote"></div>
+    <div class="field">
+      <label>ಶಿಕ್ಷಕರ ಹೆಸರು</label>
+      <input type="text" id="teacherName" value="PRAVEEN KULKARNI">
+    </div>
+    <div class="field">
+      <label>ಶಾಲೆಯ ಹೆಸರು</label>
+      <input type="text" id="schoolName" value="GHPKBS KUSUGAL">
+    </div>
+    <div class="field full">
+      <label>ದಿನದ ಸ್ಥಿತಿ</label>
+      <select id="dayStatus">
+        <option value="working">ಕಾರ್ಯನಿರ್ವಹಣಾ ದಿನ (Working Day)</option>
+        <option value="holiday">ಹಾಲಿಡೇ (Holiday)</option>
+        <option value="leave">ಲೀವ್ (Leave)</option>
+      </select>
+    </div>
+    <div class="field full" id="reasonField" style="display:none;">
+      <label id="reasonLabel">ಕಾರಣ</label>
+      <input type="text" id="dayReason" placeholder="ಕಾರಣ ಬರೆಯಿರಿ">
+    </div>
+  </div>
+
+  <div class="section-label" id="periodsSectionLabel"><span>ಅವಧಿವಾರ ವಿವರ</span><div class="line"></div></div>
+
+  <div class="periods" id="periodsWrap"></div>
+</div>
+
+<div class="setup-note">
+  <strong>ಒಂದು ಬಾರಿಯ ಸೆಟಪ್ ಬೇಕು:</strong> ಡೇಟಾ ನೇರವಾಗಿ Google Sheet ಗೆ ಹೋಗಬೇಕಾದರೆ Apps Script Web App URL ಅನ್ನು ಕೆಳಗಿನ ಕೋಡ್‌ನಲ್ಲಿ <code>SCRIPT_URL</code> ಜಾಗದಲ್ಲಿ ಹಾಕಿ. ಹಂತಗಳನ್ನು ಚಾಟ್‌ನಲ್ಲಿ ಕೊಟ್ಟಿದ್ದೇನೆ.
+</div>
+
+<div class="submit-bar">
+  <div class="status" id="statusMsg"></div>
+  <button id="submitBtn">ವರದಿ ಸಲ್ಲಿಸಿ</button>
+</div>
+
+<script>
+  // ===== ಇಲ್ಲಿ ನಿಮ್ಮ Google Apps Script Web App URL ಅಂಟಿಸಿ =====
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzeTvwBw18JTtU39wLKEjjtH195NVTZldr7n803LMrLA9BV9xyJ0ZP5U_jLtZX3Iioutw/exec";
+  // ================================================================
+
+  const periodsWrap = document.getElementById('periodsWrap');
+  const totalPeriods = 8;
+
+  for(let i=1;i<=totalPeriods;i++){
+    const card = document.createElement('div');
+    card.className = 'card period-card';
+    card.innerHTML = `
+      <div class="period-head">
+        <div class="period-num">${i}</div>
+        <div class="plabel">ಅವಧಿ ${i}</div>
+      </div>
+      <div class="period-body">
+        <div>
+          <label>ವಿಷಯ</label>
+          <select class="subject">
+            <option value="">-- ಆಯ್ಕೆಮಾಡಿ --</option>
+            <option value="ಹಿಂದಿ">ಹಿಂದಿ</option>
+            <option value="ವಿಜ್ಞಾನ">ವಿಜ್ಞಾನ</option>
+            <option value="ಆನ್‌ ಲೈನ್‌ ಕೆಲಸ">ಆನ್‌ ಲೈನ್‌ ಕೆಲಸ</option>
+            <option value="ಇತರೆ">ಇತರೆ</option>
+          </select>
+        </div>
+        <div>
+          <label>ತರಗತಿ</label>
+          <select class="class-sec">
+            <option value="">-- ಆಯ್ಕೆಮಾಡಿ --</option>
+            <option value="6ನೇ ತರಗತಿ">6ನೇ ತರಗತಿ</option>
+            <option value="7ನೇ ತರಗತಿ">7ನೇ ತರಗತಿ</option>
+            <option value="ಇತರೆ">ಇತರೆ</option>
+          </select>
+        </div>
+        <div class="full subject-other-wrap" style="display:none;">
+          <label>ಇತರೆ ವಿಷಯದ ಹೆಸರು</label>
+          <input type="text" class="subject-other" placeholder="ವಿಷಯದ ಹೆಸರು ಬರೆಯಿರಿ">
+        </div>
+        <div class="full class-other-wrap" style="display:none;">
+          <label>ಇತರೆ ತರಗತಿಯ ಹೆಸರು</label>
+          <input type="text" class="class-other" placeholder="ತರಗತಿಯ ಹೆಸರು ಬರೆಯಿರಿ">
+        </div>
+        <div class="full">
+          <label>ಪಾಠ ಮಾಡಿದ ವಿಷಯ ವಿವರ</label>
+          <textarea class="topic" placeholder="ಇಂದು ಏನೇನು ಬೋಧಿಸಿದಿರಿ ಎಂದು ಬರೆಯಿರಿ"></textarea>
+        </div>
+      </div>
+    `;
+
+    const subjectSelect = card.querySelector('.subject');
+    const otherWrap = card.querySelector('.subject-other-wrap');
+    subjectSelect.addEventListener('change', () => {
+      otherWrap.style.display = (subjectSelect.value === 'ಇತರೆ') ? '' : 'none';
+    });
+
+    const classSelect = card.querySelector('.class-sec');
+    const classOtherWrap = card.querySelector('.class-other-wrap');
+    classSelect.addEventListener('change', () => {
+      classOtherWrap.style.display = (classSelect.value === 'ಇತರೆ') ? '' : 'none';
+    });
+    periodsWrap.appendChild(card);
+  }
+
+  document.getElementById('reportDate').valueAsDate = new Date();
+
+  const dayStatusEl = document.getElementById('dayStatus');
+  const reasonField = document.getElementById('reasonField');
+  const reasonLabel = document.getElementById('reasonLabel');
+  const dayReasonInput = document.getElementById('dayReason');
+  const periodsSectionLabel = document.getElementById('periodsSectionLabel');
+  const periodsWrapEl = document.getElementById('periodsWrap');
+  const reportDateEl = document.getElementById('reportDate');
+  const lookupNoteEl = document.getElementById('lookupNote');
+
+  // ===== ಆಯ್ಕೆ ಮಾಡಿದ ದಿನಾಂಕದ ಮಾಹಿತಿಯನ್ನು Google Sheet ನಿಂದ ತೆಗೆದುಕೊಂಡು ಫಾರ್ಮ್‌ನಲ್ಲಿ ತೋರಿಸುವುದು =====
+  function applyDayData(data){
+    const cards = document.querySelectorAll('.period-card');
+
+    if(!data || !data.found){
+      dayStatusEl.value = 'working';
+      dayReasonInput.value = '';
+      cards.forEach(card=>{
+        card.querySelector('.subject').value = '';
+        card.querySelector('.class-sec').value = '';
+        card.querySelector('.topic').value = '';
+        card.querySelector('.subject-other').value = '';
+        card.querySelector('.subject-other-wrap').style.display = 'none';
+        card.querySelector('.class-other').value = '';
+        card.querySelector('.class-other-wrap').style.display = 'none';
+      });
+      updateDayStatusUI();
+      return;
+    }
+
+    dayStatusEl.value = data.dayStatus || 'working';
+    dayReasonInput.value = data.reason || '';
+
+    cards.forEach((card, idx) => {
+      const p = (data.periods || []).find(pp => Number(pp.period) === idx + 1) || {};
+      const subjectSelect = card.querySelector('.subject');
+      const otherWrap = card.querySelector('.subject-other-wrap');
+      const otherInput = card.querySelector('.subject-other');
+      const knownSubjects = ['ಹಿಂದಿ', 'ವಿಜ್ಞಾನ', 'ಆನ್‌ ಲೈನ್‌ ಕೆಲಸ'];
+
+      if(p.subject && knownSubjects.includes(p.subject)){
+        subjectSelect.value = p.subject;
+        otherWrap.style.display = 'none';
+        otherInput.value = '';
+      } else if(p.subject){
+        subjectSelect.value = 'ಇತರೆ';
+        otherWrap.style.display = '';
+        otherInput.value = p.subject;
+      } else {
+        subjectSelect.value = '';
+        otherWrap.style.display = 'none';
+        otherInput.value = '';
+      }
+
+      const classSelect = card.querySelector('.class-sec');
+      const classOtherWrap = card.querySelector('.class-other-wrap');
+      const classOtherInput = card.querySelector('.class-other');
+      const knownClasses = ['6ನೇ ತರಗತಿ', '7ನೇ ತರಗತಿ'];
+
+      if(p.class && knownClasses.includes(p.class)){
+        classSelect.value = p.class;
+        classOtherWrap.style.display = 'none';
+        classOtherInput.value = '';
+      } else if(p.class){
+        classSelect.value = 'ಇತರೆ';
+        classOtherWrap.style.display = '';
+        classOtherInput.value = p.class;
+      } else {
+        classSelect.value = '';
+        classOtherWrap.style.display = 'none';
+        classOtherInput.value = '';
+      }
+
+      card.querySelector('.topic').value = p.topic || '';
+    });
+
+    updateDayStatusUI();
+  }
+
+  async function loadDayData(dateStr){
+    if(!dateStr || SCRIPT_URL.includes("PASTE_YOUR")) return;
+    lookupNoteEl.textContent = "ಈ ದಿನಾಂಕದ ಮಾಹಿತಿ ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ...";
+    lookupNoteEl.className = "lookup-note";
+    try{
+      const res = await fetch(`${SCRIPT_URL}?action=get&date=${encodeURIComponent(dateStr)}`, { method: "GET" });
+      const data = await res.json();
+      applyDayData(data);
+      if(data && data.found){
+        lookupNoteEl.textContent = "✓ ಈ ದಿನಾಂಕದ ಈಗಾಗಲೇ ಇರುವ ಮಾಹಿತಿ ಲೋಡ್ ಆಗಿದೆ.";
+        lookupNoteEl.className = "lookup-note ok";
+      } else {
+        lookupNoteEl.textContent = "ಈ ದಿನಾಂಕಕ್ಕೆ ಇನ್ನೂ ಯಾವುದೇ ವರದಿ ಸಲ್ಲಿಕೆಯಾಗಿಲ್ಲ.";
+        lookupNoteEl.className = "lookup-note";
+      }
+    }catch(err){
+      lookupNoteEl.textContent = "ಹಿಂದಿನ ಡೇಟಾ ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ (Script URL / ಡಿಪ್ಲಾಯ್ಮೆಂಟ್ ಪರಿಶೀಲಿಸಿ).";
+      lookupNoteEl.className = "lookup-note err";
+    }
+  }
+
+  reportDateEl.addEventListener('change', (e) => loadDayData(e.target.value));
+
+  function updateDayStatusUI(){
+    const val = dayStatusEl.value;
+    if(val === 'working'){
+      reasonField.style.display = 'none';
+      periodsSectionLabel.style.display = '';
+      periodsWrapEl.style.display = '';
+    } else {
+      periodsSectionLabel.style.display = 'none';
+      periodsWrapEl.style.display = 'none';
+      reasonField.style.display = '';
+      reasonLabel.textContent = (val === 'holiday') ? 'ಹಾಲಿಡೇ ಕಾರಣ' : 'ಲೀವ್ ಕಾರಣ';
+      dayReasonInput.placeholder = (val === 'holiday') ? 'ಉದಾ: ರಾಷ್ಟ್ರೀಯ ಹಬ್ಬ, ಸ್ಥಳೀಯ ರಜೆ' : 'ಉದಾ: ಅನಾರೋಗ್ಯ ರಜೆ, ವೈಯಕ್ತಿಕ ಕಾರಣ';
+    }
+  }
+  dayStatusEl.addEventListener('change', updateDayStatusUI);
+  updateDayStatusUI();
+  loadDayData(reportDateEl.value);
+
+  document.getElementById('submitBtn').addEventListener('click', async () => {
+    const statusEl = document.getElementById('statusMsg');
+    const btn = document.getElementById('submitBtn');
+    const dayStatus = dayStatusEl.value;
+
+    const payload = {
+      date: document.getElementById('reportDate').value,
+      teacher: document.getElementById('teacherName').value,
+      school: document.getElementById('schoolName').value,
+      dayStatus: dayStatus,
+      reason: (dayStatus === 'working') ? '' : dayReasonInput.value,
+      periods: []
+    };
+
+    if(dayStatus === 'working'){
+      document.querySelectorAll('.period-card').forEach((row, idx) => {
+        const subjectVal = row.querySelector('.subject').value;
+        const finalSubject = (subjectVal === 'ಇತರೆ')
+          ? (row.querySelector('.subject-other').value || 'ಇತರೆ')
+          : subjectVal;
+        const classVal = row.querySelector('.class-sec').value;
+        const finalClass = (classVal === 'ಇತರೆ')
+          ? (row.querySelector('.class-other').value || 'ಇತರೆ')
+          : classVal;
+        payload.periods.push({
+          period: idx + 1,
+          subject: finalSubject,
+          class: finalClass,
+          topic: row.querySelector('.topic').value
+        });
+      });
+    }
+
+    if(!payload.date){
+      statusEl.textContent = "ದಯವಿಟ್ಟು ದಿನಾಂಕ ನಮೂದಿಸಿ.";
+      statusEl.className = "status err";
+      return;
+    }
+    if(SCRIPT_URL.includes("PASTE_YOUR")){
+      statusEl.textContent = "ಮೊದಲು Apps Script URL ಅಳವಡಿಸಿ.";
+      statusEl.className = "status err";
+      return;
+    }
+
+    btn.disabled = true;
+    statusEl.textContent = "ಸಲ್ಲಿಸಲಾಗುತ್ತಿದೆ...";
+    statusEl.className = "status";
+
+    try{
+      await fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
+      statusEl.textContent = "ವರದಿ ಸಲ್ಲಿಕೆಯಾಗಿದೆ ✓";
+      statusEl.className = "status ok";
+    }catch(err){
+      statusEl.textContent = "ದೋಷ, ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.";
+      statusEl.className = "status err";
+    }finally{
+      btn.disabled = false;
+    }
+  });
+</script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch((err) => {
+        console.warn('Service worker registration failed:', err);
+      });
+    });
+  }
+</script>
+
+</body>
+</html>
